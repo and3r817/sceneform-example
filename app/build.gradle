@@ -1,0 +1,53 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    defaultConfig {
+        applicationId "io.github.and3r817.ar.sceneform.example"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            abiFilters 'arm64-v8a', 'x86'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation deps.kotlin.stdlib
+    implementation deps.support.app_compat
+    implementation deps.support.design
+    implementation deps.sceneform.core
+    implementation deps.sceneform.ux
+}
+
+apply plugin: 'com.google.ar.sceneform.plugin'
+
+sceneform.asset('sampledata/models/model-body.obj',
+        'default',
+        'sampledata/models/model-body.sfa',
+        'src/main/assets/model-body')
+
+sceneform.asset('sampledata/models/model-head.obj',
+        'default',
+        'sampledata/models/model-head.sfa',
+        'src/main/assets/model-head')
+
+sceneform.asset('sampledata/models/robot.obj',
+        'default',
+        'sampledata/models/robot.sfa',
+        'src/main/assets/robot')

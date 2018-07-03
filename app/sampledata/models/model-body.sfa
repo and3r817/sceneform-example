@@ -1,0 +1,93 @@
+{
+   materials: [
+      {
+         name: "material_metal_dark_gray",
+         parameters: [
+            {
+               baseColor: null,
+            },
+            {
+               baseColorTint: [
+                  0.18,
+                  0.19,
+                  0.21,
+                  1,
+               ],
+            },
+            {
+               metallic: 0.9,
+            },
+            {
+               roughness: 0.4,
+            },
+            {
+               opacity: null,
+            },
+         ],
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
+      },
+      {
+         name: "material_metal_gray",
+         parameters: [
+            {
+               baseColor: null,
+            },
+            {
+               baseColorTint: [
+                  0.6,
+                  0.65,
+                  0.71,
+                  1,
+               ],
+            },
+            {
+               metallic: 0.9,
+            },
+            {
+               roughness: 0.4,
+            },
+            {
+               opacity: null,
+            },
+         ],
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
+      },
+      {
+         name: "material_rubber",
+         parameters: [
+            {
+               baseColor: null,
+            },
+            {
+               baseColorTint: [
+                  0,
+                  0,
+                  0,
+                  1,
+               ],
+            },
+            {
+               metallic: 0,
+            },
+            {
+               roughness: 0.6,
+            },
+            {
+               opacity: null,
+            },
+         ],
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
+      },
+   ],
+   model: {
+      attributes: [
+         "Position",
+         "TexCoord",
+         "Orientation",
+      ],
+      collision: {},
+      file: "sampledata/models/model-body.obj",
+      name: "model-body",
+   },
+   version: "0.51:1",
+}

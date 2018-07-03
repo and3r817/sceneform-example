@@ -1,0 +1,55 @@
+def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.mavenLocal()
+    handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+ext.addRepos = this.&addRepos
+
+def build_versions = [:]
+build_versions.min_sdk = 24
+build_versions.target_sdk = 27
+build_versions.build_tools = "27.0.3"
+ext.build_versions = build_versions
+
+ext.deps = [:]
+
+def versions = [:]
+versions.android_gradle_plugin = "3.1.2"
+versions.kotlin = "1.2.50"
+versions.support = "27.1.1"
+versions.timber = "4.5.1"
+versions.sceneform_plugin = "1.3.0"
+versions.sceneform_core = "1.3.0"
+
+def deps = [:]
+
+deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+
+deps.timber = "com.jakewharton.timber:timber:$versions.timber"
+
+ext.deps = deps
+
+def kotlin = [:]
+kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+kotlin.allopen = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
+deps.kotlin = kotlin
+
+def support = [:]
+support.annotations = "com.android.support:support-annotations:$versions.support"
+support.app_compat = "com.android.support:appcompat-v7:$versions.support"
+support.design = "com.android.support:design:$versions.support"
+support.v4 = "com.android.support:support-v4:$versions.support"
+support.core_utils = "com.android.support:support-core-utils:$versions.support"
+deps.support = support
+
+def sceneform = [:]
+sceneform.plugin = "com.google.ar.sceneform:plugin:$versions.sceneform_plugin"
+sceneform.core = "com.google.ar.sceneform:core:$versions.sceneform_core"
+sceneform.ux = "com.google.ar.sceneform.ux:sceneform-ux:$versions.sceneform_core"
+deps.sceneform = sceneform
+
+ext.deps = deps
+
