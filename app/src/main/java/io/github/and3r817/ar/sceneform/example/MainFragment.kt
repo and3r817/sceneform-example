@@ -87,7 +87,7 @@ class MainFragment : ArFragment() {
 
             val lensLight = Light.builder(Light.Type.POINT)
                     .setColor(com.google.ar.sceneform.rendering.Color(0.212f, 0.984f, 1f, 1f))
-                    .setFalloffRadius(0.05f)
+                    .setFalloffRadius(0.03f)
                     .build()
 
             val lensLightNode = TransformableNode(transformationSystem)
