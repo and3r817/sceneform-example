@@ -20,7 +20,6 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
-import java.util.*
 import java.util.concurrent.CompletableFuture
 
 
@@ -35,6 +34,12 @@ class MainFragment : ArFragment() {
     private var botHeadNode: TransformableNode? = null
 
     private var bubbleNode: TransformableNode? = null
+
+    private var ledAnimator: ValueAnimator? = null
+
+    private val bubbleIntervalSec = 3L
+
+    private var bubbleTime = 0L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -118,16 +123,14 @@ class MainFragment : ArFragment() {
             bubbleNode!!.setParent(botHeadNode)
             bubbleNode!!.localPosition = Vector3(0.2054f, 0.2221f, 0.0f)
             bubbleNode!!.renderable = bubbleRenderable
+            bubbleNode!!.isEnabled = false
 
-            val durationInMilliseconds = 1000
-            val minimumIntensity = 1.0E-4f
-            val maximumIntensity = 1f
-            val intensityAnimator = ObjectAnimator.ofFloat(ledLight, "intensity",
-                    minimumIntensity, maximumIntensity)
-            intensityAnimator.duration = durationInMilliseconds.toLong()
-            intensityAnimator.repeatCount = ValueAnimator.INFINITE
-            intensityAnimator.repeatMode = ValueAnimator.REVERSE
-            intensityAnimator.start()
+            ledAnimator = ObjectAnimator.ofFloat(ledLight, "intensity",
+                    1.0E-4f, 100f)
+            ledAnimator?.duration = 1000L
+            ledAnimator?.repeatCount = ValueAnimator.INFINITE
+            ledAnimator?.repeatMode = ValueAnimator.REVERSE
+            ledAnimator?.start()
         }
     }
 
@@ -139,5 +142,11 @@ class MainFragment : ArFragment() {
         val headDirection = Vector3.subtract(cameraPosition, headPosition)
         val headLookRotation = Quaternion.lookRotation(headDirection, Vector3.up())
         botHeadNode?.worldRotation = headLookRotation
+
+        val frameTimeSec = frameTime!!.startSeconds.toLong()
+        if (bubbleTime < frameTimeSec - bubbleIntervalSec) {
+            bubbleNode!!.isEnabled = !bubbleNode!!.isEnabled
+            bubbleTime = frameTimeSec
+        }
     }
 }
