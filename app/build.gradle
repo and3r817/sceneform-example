@@ -46,8 +46,3 @@ sceneform.asset('sampledata/models/model-head.obj',
         'default',
         'sampledata/models/model-head.sfa',
         'src/main/assets/model-head')
-
-sceneform.asset('sampledata/models/robot.obj',
-        'default',
-        'sampledata/models/robot.sfa',
-        'src/main/assets/robot')
