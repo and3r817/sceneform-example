@@ -1,5 +1,7 @@
 package io.github.and3r817.ar.sceneform.example
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +20,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
+import java.util.*
 import java.util.concurrent.CompletableFuture
 
 
@@ -74,6 +77,11 @@ class MainFragment : ArFragment() {
             botNode.setParent(anchorNode)
             botNode.select()
 
+            val cameraPosition = arSceneView?.scene?.camera?.worldPosition!!
+            val headPosition = botNode.worldPosition
+            val headDirection = Vector3.subtract(Vector3(cameraPosition.x, headPosition.y, cameraPosition.z), headPosition)
+            botNode.worldRotation = Quaternion.lookRotation(headDirection, Vector3.up())
+
             botHeadNode = TransformableNode(transformationSystem)
             botHeadNode?.setParent(botNode)
             botHeadNode?.renderable = botHeadRenderable
@@ -107,9 +115,19 @@ class MainFragment : ArFragment() {
             ledLightNode.select()
 
             bubbleNode = TransformableNode(transformationSystem)
-            bubbleNode?.setParent(botHeadNode)
-            bubbleNode?.localPosition = Vector3(0.2054f, 0.2221f, 0.0f)
-            bubbleNode?.renderable = bubbleRenderable
+            bubbleNode!!.setParent(botHeadNode)
+            bubbleNode!!.localPosition = Vector3(0.2054f, 0.2221f, 0.0f)
+            bubbleNode!!.renderable = bubbleRenderable
+
+            val durationInMilliseconds = 1000
+            val minimumIntensity = 1.0E-4f
+            val maximumIntensity = 1f
+            val intensityAnimator = ObjectAnimator.ofFloat(ledLight, "intensity",
+                    minimumIntensity, maximumIntensity)
+            intensityAnimator.duration = durationInMilliseconds.toLong()
+            intensityAnimator.repeatCount = ValueAnimator.INFINITE
+            intensityAnimator.repeatMode = ValueAnimator.REVERSE
+            intensityAnimator.start()
         }
     }
 
@@ -117,12 +135,9 @@ class MainFragment : ArFragment() {
         super.onUpdate(frameTime)
 
         val cameraPosition = arSceneView?.scene?.camera?.worldPosition ?: return
-        val cardPosition = botHeadNode?.worldPosition ?: return
-        val direction = Vector3.subtract(cameraPosition, cardPosition)
-        val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
-        botHeadNode?.worldRotation = lookRotation
-
-//        val bubbleRotation = bubbleNode?.worldRotation!!
-//        bubbleNode?.worldRotation = Quaternion(0.0f, bubbleRotation.y, bubbleRotation.z, bubbleRotation.w)
+        val headPosition = botHeadNode?.worldPosition ?: return
+        val headDirection = Vector3.subtract(cameraPosition, headPosition)
+        val headLookRotation = Quaternion.lookRotation(headDirection, Vector3.up())
+        botHeadNode?.worldRotation = headLookRotation
     }
 }
